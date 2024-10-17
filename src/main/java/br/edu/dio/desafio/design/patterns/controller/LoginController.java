@@ -2,8 +2,8 @@ package br.edu.dio.desafio.design.patterns.controller;
 
 import br.edu.dio.desafio.design.patterns.dto.Login;
 import br.edu.dio.desafio.design.patterns.dto.Sessao;
-import br.edu.dio.desafio.design.patterns.model.User;
-import br.edu.dio.desafio.design.patterns.repository.UserRepository;
+import br.edu.dio.desafio.design.patterns.model.UserAuth;
+import br.edu.dio.desafio.design.patterns.repository.UserAuthRepository;
 import br.edu.dio.desafio.design.patterns.security.JWTCreator;
 import br.edu.dio.desafio.design.patterns.security.JWTObject;
 import br.edu.dio.desafio.design.patterns.security.SecurityConfig;
@@ -33,7 +33,7 @@ public class LoginController {
     private SecurityConfig securityConfig;
 
     @Autowired
-    private UserRepository repository;
+    private UserAuthRepository userAuthRepository;
 
     @Operation(
             summary = "Login",
@@ -46,20 +46,20 @@ public class LoginController {
                     schema = @Schema(implementation = Sessao.class)))
     @PostMapping("/login")
     public ResponseEntity<Sessao> logar(@RequestBody Login login){
-        User user = repository.findByUsername(login.getUsername());
-        if(user!=null) {
-            boolean passwordOk =  encoder.matches(login.getPassword(), user.getPassword());
+        UserAuth userAuth = userAuthRepository.findByUsername(login.getUsername());
+        if(userAuth !=null) {
+            boolean passwordOk = encoder.matches(login.getPassword(), userAuth.getPassword());
             if (!passwordOk) {
                 throw new RuntimeException("Senha inválida para o login: " + login.getUsername());
             }
             //Estamos enviando um objeto Sessão para retornar mais informações do usuário
             Sessao sessao = new Sessao();
-            sessao.setUsername(user.getUsername());
+            sessao.setUsername(userAuth.getUsername());
 
             JWTObject jwtObject = new JWTObject();
             jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
             jwtObject.setExpiration((new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION)));
-            jwtObject.setRoles(user.getRoles());
+            jwtObject.setRoles(userAuth.getRoles());
             sessao.setToken(JWTCreator.create(SecurityConfig.PREFIX, SecurityConfig.KEY, jwtObject));
             return ResponseEntity.ok(sessao);
         }else {

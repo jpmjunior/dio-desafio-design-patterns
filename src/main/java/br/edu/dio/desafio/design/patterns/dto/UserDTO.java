@@ -5,24 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(name = "User", description = "Dados de usuário")
 public class UserDTO {
 
-    @Schema(description = "Nome do usuário", example = "José Júnior")
-    private String name;
+    @Schema(example = "José Júnior")
+    private String nome;
 
-    @Schema(description = "Nome de usuário", example = "josejunior")
-    private String username;
+    @Schema(example = "65555000")
+    private String cep;
 
-    @Schema(description = "Senha do usuário", example = "senha1234")
-    private String password;
+    @Schema(example = "18A")
+    private String numero;
 
-    @Schema(description = "Perfis de acesso", example = "[\"USERS\",\"MANAGERS\"]")
-    private List<String> roles;
+    @Schema(example = "Bloco A, Apt. 103")
+    private String complemento;
 
-}
+    private AuthDTO auth;
+
+ }

@@ -14,7 +14,7 @@ public class Sessao {
     @Schema(description = "Nome de usuário", example = "josejunior")
     private String username;
 
-    @Schema(description = "Token do usupario", example = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3Mjg3NTgxMzUsImV4cCI6MTcyODc2MTczNSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSUyIsIlJPTEVfTUFOQUdFUlMiXX0.b8vnO0vuy6qSzBOs9s40SjqYq8vX_unVSHtuHJ3bbnrGBhJgRR_09JbUILBNBnayD9sxgCPyOwULmcqKfI2aRQ")
+    @Schema(description = "Token do usuário", example = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3Mjg3NTgxMzUsImV4cCI6MTcyODc2MTczNSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSUyIsIlJPTEVfTUFOQUdFUlMiXX0.b8vnO0vuy6qSzBOs9s40SjqYq8vX_unVSHtuHJ3bbnrGBhJgRR_09JbUILBNBnayD9sxgCPyOwULmcqKfI2aRQ")
     private String token;
 
 }

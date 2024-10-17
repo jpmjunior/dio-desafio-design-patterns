@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,17 +25,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-@Table(name = "tab_user")
-public class User implements UserDetails {
+@Table(name = "user_auth")
+public class UserAuth implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
+    @Column(name = "id_user_auth")
     private Integer id;
-
-    @Column(length = 50, nullable = false)
-    private String name;
 
     @Column(length = 20, nullable = false, unique = true)
     private String username;
@@ -43,7 +42,7 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "tab_user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role_id")
     private List<String> roles = new ArrayList<>();
 

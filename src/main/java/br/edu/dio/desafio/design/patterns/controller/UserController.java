@@ -1,7 +1,7 @@
 package br.edu.dio.desafio.design.patterns.controller;
 
 import br.edu.dio.desafio.design.patterns.dto.UserDTO;
-import br.edu.dio.desafio.design.patterns.model.User;
+import br.edu.dio.desafio.design.patterns.model.Usuario;
 import br.edu.dio.desafio.design.patterns.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,8 +38,8 @@ public class UserController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @PostMapping
     public ResponseEntity postUser(@RequestBody UserDTO userDTO){
-        User userEntity = modelMapper.map(userDTO, User.class);
-        service.createUser(userEntity);
+        Usuario usuarioEntity = modelMapper.map(userDTO, Usuario.class);
+        service.createUser(usuarioEntity);
         return ResponseEntity.created(URI.create("/users")).build();
     }
 
