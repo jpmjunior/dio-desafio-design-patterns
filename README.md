@@ -38,7 +38,7 @@ Dica: Além dos projetos/repositórios que criamos para este desafio, caso queir
 - Springdoc (Swagger)
 - Json Web Token
 
-## Design patterns implementados
+## Design patterns (em implementação)
 ### Singleton
 ### Facade
 ### Strategy
