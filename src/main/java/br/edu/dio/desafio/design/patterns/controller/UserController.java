@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +22,13 @@ import java.net.URI;
 @Tag(name = "Gestão de usuários", description = "Operações relacionadas aos usuários")
 public class UserController {
 
-    @Autowired
     private UserService service;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    public UserController(UserService service, ModelMapper modelMapper) {
+        this.service = service;
+        this.modelMapper = modelMapper;
+    }
 
     @Operation(
             summary = "Cadastro de usuários",
@@ -37,7 +38,7 @@ public class UserController {
             description = "Cadastro realizado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @PostMapping
-    public ResponseEntity postUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> postUser(@RequestBody UserDTO userDTO){
         Usuario usuarioEntity = modelMapper.map(userDTO, Usuario.class);
         service.createUser(usuarioEntity);
         return ResponseEntity.created(URI.create("/users")).build();

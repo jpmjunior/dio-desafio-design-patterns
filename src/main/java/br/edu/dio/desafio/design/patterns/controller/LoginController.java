@@ -12,9 +12,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +26,15 @@ import java.util.Date;
 @RestController
 public class LoginController {
 
-    @Autowired
     private PasswordEncoder encoder;
-
-    @Autowired
+    private UserAuthRepository userAuthRepository;
     private SecurityConfig securityConfig;
 
-    @Autowired
-    private UserAuthRepository userAuthRepository;
+    public LoginController(PasswordEncoder encoder, UserAuthRepository userAuthRepository, SecurityConfig securityConfig) {
+        this.encoder = encoder;
+        this.userAuthRepository = userAuthRepository;
+        this.securityConfig = securityConfig;
+    }
 
     @Operation(
             summary = "Login",
@@ -50,7 +51,7 @@ public class LoginController {
         if(userAuth !=null) {
             boolean passwordOk = encoder.matches(login.getPassword(), userAuth.getPassword());
             if (!passwordOk) {
-                throw new RuntimeException("Senha inválida para o login: " + login.getUsername());
+                throw new BadCredentialsException("Usuário ou senha inválidos para o login: " + login.getUsername());
             }
             //Estamos enviando um objeto Sessão para retornar mais informações do usuário
             Sessao sessao = new Sessao();
@@ -58,12 +59,12 @@ public class LoginController {
 
             JWTObject jwtObject = new JWTObject();
             jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
-            jwtObject.setExpiration((new Date(System.currentTimeMillis() + SecurityConfig.EXPIRATION)));
+            jwtObject.setExpiration((new Date(System.currentTimeMillis() + securityConfig.getExpiration())));
             jwtObject.setRoles(userAuth.getRoles());
-            sessao.setToken(JWTCreator.create(SecurityConfig.PREFIX, SecurityConfig.KEY, jwtObject));
+            sessao.setToken(JWTCreator.create(securityConfig.getPrefix(), securityConfig.getKey(), jwtObject));
             return ResponseEntity.ok(sessao);
         }else {
-            throw new RuntimeException("Erro ao tentar fazer login");
+            throw new BadCredentialsException("Erro ao tentar fazer login");
         }
     }
 

@@ -10,6 +10,10 @@ import java.util.List;
 
 public class JWTCreator {
 
+    private JWTCreator() {
+        throw new IllegalStateException("Classe não deve ser instânciada");
+    }
+
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String ROLES_AUTHORITIES = "authorities";
 
@@ -46,7 +50,7 @@ public class JWTCreator {
     }
 
     private static List<String> checkRoles(List<String> roles) {
-        return roles.stream().map(s -> "ROLE_" + s.replaceAll("ROLE_","")).toList();
+        return roles.stream().map(s -> "ROLE_" + s.replace("ROLE_","")).toList();
     }
 
 }

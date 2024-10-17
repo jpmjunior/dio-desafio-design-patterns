@@ -13,10 +13,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
+
+    private SecurityConfig securityConfig;
+
+    public JWTFilter(SecurityConfig securityConfig) {
+        this.securityConfig = securityConfig;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -26,7 +31,7 @@ public class JWTFilter extends OncePerRequestFilter {
         //esta implementação só esta validando a integridade do token
         try {
             if(token!=null && !token.isEmpty()) {
-                JWTObject tokenObject = JWTCreator.create(token, SecurityConfig.PREFIX, SecurityConfig.KEY);
+                JWTObject tokenObject = JWTCreator.create(token, securityConfig.getPrefix(), securityConfig.getKey());
 
                 List<SimpleGrantedAuthority> authorities = authorities(tokenObject.getRoles());
 
@@ -49,8 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private List<SimpleGrantedAuthority> authorities(List<String> roles){
-        return roles.stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return roles.stream().map(SimpleGrantedAuthority::new).toList();
     }
 
 }

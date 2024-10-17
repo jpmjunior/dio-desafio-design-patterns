@@ -14,7 +14,7 @@ public class UserDTO {
     @Schema(example = "José Júnior")
     private String nome;
 
-    @Schema(example = "65555000")
+    @Schema(example = "65056000")
     private String cep;
 
     @Schema(example = "18A")

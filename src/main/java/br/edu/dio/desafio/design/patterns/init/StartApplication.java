@@ -6,7 +6,6 @@ import br.edu.dio.desafio.design.patterns.model.Usuario;
 import br.edu.dio.desafio.design.patterns.repository.UsuarioRepository;
 import br.edu.dio.desafio.design.patterns.service.UserService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +15,13 @@ import java.util.List;
 @Component
 public class StartApplication implements CommandLineRunner {
 
-    @Autowired
     private UsuarioRepository repository;
-
-    @Autowired
     private UserService service;
+
+    public StartApplication(UsuarioRepository repository, UserService service) {
+        this.repository = repository;
+        this.service = service;
+    }
 
     @Transactional
     @Override

@@ -1,26 +1,20 @@
 package br.edu.dio.desafio.design.patterns.security;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+@Getter
 @Configuration
-@ConfigurationProperties(prefix = "security.config")
 public class SecurityConfig {
 
-    public static String PREFIX;
-    public static String KEY;
-    public static Long EXPIRATION;
+    @Value("${security.config.prefix}")
+    private String prefix;
 
-    public void setPrefix(String prefix){
-        PREFIX = prefix;
-    }
+    @Value("${security.config.key}")
+    private String key;
 
-    public void setKey(String key){
-        KEY = key;
-    }
-
-    public void setExpiration(Long expiration){
-        EXPIRATION = expiration;
-    }
+    @Value("${security.config.expiration}")
+    private Long expiration;
 
 }

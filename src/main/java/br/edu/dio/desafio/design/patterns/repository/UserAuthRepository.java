@@ -1,7 +1,6 @@
 package br.edu.dio.desafio.design.patterns.repository;
 
 import br.edu.dio.desafio.design.patterns.model.UserAuth;
-import br.edu.dio.desafio.design.patterns.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

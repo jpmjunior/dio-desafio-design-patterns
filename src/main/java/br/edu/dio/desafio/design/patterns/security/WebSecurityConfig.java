@@ -1,6 +1,5 @@
 package br.edu.dio.desafio.design.patterns.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,9 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-
-    @Autowired
-    private JWTFilter jwtFilter;
 
     @Bean
     public BCryptPasswordEncoder encoder(){
@@ -39,7 +35,7 @@ public class WebSecurityConfig {
     };
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JWTFilter jwtFilter) throws Exception {
         return http
                 .csrf(c -> c.disable())
                 .cors(c -> c.disable())
