@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,12 +26,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_auth")
-public class UserAuth implements UserDetails {
+public class Autenticacao implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user_auth")
     private Integer id;
 
     @Column(length = 20, nullable = false, unique = true)
@@ -42,8 +39,7 @@ public class UserAuth implements UserDetails {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role_id")
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "autenticacao_id"))
     private List<String> roles = new ArrayList<>();
 
     @Override

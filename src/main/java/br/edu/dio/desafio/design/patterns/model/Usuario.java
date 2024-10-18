@@ -31,7 +31,7 @@ public class Usuario {
     private Endereco endereco;
 
     @OneToOne
-    @JoinColumn(name = "user_auth_id")
-    private UserAuth auth;
+    @JoinColumn(name = "autenticacao_id")
+    private Autenticacao autenticacao;
 
 }

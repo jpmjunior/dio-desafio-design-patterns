@@ -1,7 +1,6 @@
 package br.edu.dio.desafio.design.patterns.security;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -11,21 +10,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    private SecurityConfig securityConfig;
+    private final SecurityConfig securityConfig;
 
     public JWTFilter(SecurityConfig securityConfig) {
         this.securityConfig = securityConfig;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         //obtem o token da request com AUTHORIZATION
         String token =  request.getHeader(JWTCreator.HEADER_AUTHORIZATION);
         //esta implementação só esta validando a integridade do token

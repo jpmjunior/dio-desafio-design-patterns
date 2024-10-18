@@ -2,11 +2,7 @@ package br.edu.dio.desafio.design.patterns.controller;
 
 import br.edu.dio.desafio.design.patterns.dto.Login;
 import br.edu.dio.desafio.design.patterns.dto.Sessao;
-import br.edu.dio.desafio.design.patterns.model.UserAuth;
-import br.edu.dio.desafio.design.patterns.repository.UserAuthRepository;
-import br.edu.dio.desafio.design.patterns.security.JWTCreator;
-import br.edu.dio.desafio.design.patterns.security.JWTObject;
-import br.edu.dio.desafio.design.patterns.security.SecurityConfig;
+import br.edu.dio.desafio.design.patterns.security.AutenticacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,26 +10,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 @Tag(name = "Login de usuários")
 @RestController
 public class LoginController {
 
-    private PasswordEncoder encoder;
-    private UserAuthRepository userAuthRepository;
-    private SecurityConfig securityConfig;
+    private final AutenticacaoService autenticacaoService;
 
-    public LoginController(PasswordEncoder encoder, UserAuthRepository userAuthRepository, SecurityConfig securityConfig) {
-        this.encoder = encoder;
-        this.userAuthRepository = userAuthRepository;
-        this.securityConfig = securityConfig;
+    public LoginController(AutenticacaoService autenticacaoService) {
+        this.autenticacaoService = autenticacaoService;
     }
 
     @Operation(
@@ -47,25 +35,8 @@ public class LoginController {
                     schema = @Schema(implementation = Sessao.class)))
     @PostMapping("/login")
     public ResponseEntity<Sessao> logar(@RequestBody Login login){
-        UserAuth userAuth = userAuthRepository.findByUsername(login.getUsername());
-        if(userAuth !=null) {
-            boolean passwordOk = encoder.matches(login.getPassword(), userAuth.getPassword());
-            if (!passwordOk) {
-                throw new BadCredentialsException("Usuário ou senha inválidos para o login: " + login.getUsername());
-            }
-            //Estamos enviando um objeto Sessão para retornar mais informações do usuário
-            Sessao sessao = new Sessao();
-            sessao.setUsername(userAuth.getUsername());
+        Sessao sessao = autenticacaoService.autenticarUsuario(login);
+        return ResponseEntity.ok(sessao);
 
-            JWTObject jwtObject = new JWTObject();
-            jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
-            jwtObject.setExpiration((new Date(System.currentTimeMillis() + securityConfig.getExpiration())));
-            jwtObject.setRoles(userAuth.getRoles());
-            sessao.setToken(JWTCreator.create(securityConfig.getPrefix(), securityConfig.getKey(), jwtObject));
-            return ResponseEntity.ok(sessao);
-        }else {
-            throw new BadCredentialsException("Erro ao tentar fazer login");
-        }
     }
-
 }
