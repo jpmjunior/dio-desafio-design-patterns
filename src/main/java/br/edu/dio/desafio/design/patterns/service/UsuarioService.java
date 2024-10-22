@@ -36,6 +36,10 @@ public class UsuarioService {
         //consultando CEP na API ViaCEP
         try {
             EnderecoDTO enderecoDTO = viaCepClient.consultarCep(usuario.getEndereco().getCep());
+
+            if (enderecoDTO == null || enderecoDTO.getErro()) {
+                throw new IllegalArgumentException("CEP não encontrado");
+            }
             Endereco endereco = Endereco.builder()
                     .cep(enderecoDTO.getCep())
                     .logradouro(enderecoDTO.getLogradouro())
@@ -46,7 +50,7 @@ public class UsuarioService {
                     .complemento(usuario.getEndereco().getComplemento())
                     .build();
             usuario.setEndereco(endereco);
-        } catch (FeignException e) {
+        } catch (IllegalArgumentException | FeignException e) {
             log.info("Erro ao consultar API ViaCEP. Username: {}. Message: {}", usuario.getAutenticacao().getUsername(), e.getMessage());
         }
 
