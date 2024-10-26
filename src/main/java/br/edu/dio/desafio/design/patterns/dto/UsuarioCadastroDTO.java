@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "User", description = "Dados de usuário")
-public class UserDTO {
+@Schema(name = "UsuarioCadastro", description = "Dados de cadastro de usuário")
+public class UsuarioCadastroDTO {
 
     @Schema(example = "José Júnior")
     private String nome;
@@ -23,6 +23,6 @@ public class UserDTO {
     @Schema(example = "Bloco A, Apt. 103")
     private String complemento;
 
-    private AuthDTO auth;
+    private AutenticacaoCadastroDTO autenticacao;
 
  }

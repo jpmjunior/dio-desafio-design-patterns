@@ -7,11 +7,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SecurityRequirement(name = "tokenJWT")
 @Tag(name = "Perfis de acesso", description = "Operações para teste dos perfis de acesso")
 @RestController
+@RequestMapping("roles")
 public class PerfisAcessoController {
 
     @Operation(
@@ -25,7 +27,7 @@ public class PerfisAcessoController {
             responseCode = "403",
             description = "Usuário não autorizado",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @GetMapping("/users")
+    @GetMapping("users")
     public String users() {
         return "Authorized user";
     }
@@ -41,7 +43,7 @@ public class PerfisAcessoController {
             responseCode = "403",
             description = "Usuário não autorizado",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-    @GetMapping("/managers")
+    @GetMapping("managers")
     public String managers() {
         return "Authorized manager";
     }

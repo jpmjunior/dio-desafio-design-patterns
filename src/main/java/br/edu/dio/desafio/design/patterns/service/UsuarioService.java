@@ -8,8 +8,12 @@ import br.edu.dio.desafio.design.patterns.repository.AutenticacaoRepository;
 import br.edu.dio.desafio.design.patterns.repository.UsuarioRepository;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,7 +41,7 @@ public class UsuarioService {
         try {
             EnderecoDTO enderecoDTO = viaCepClient.consultarCep(usuario.getEndereco().getCep());
 
-            if (enderecoDTO == null || enderecoDTO.getErro()) {
+            if (enderecoDTO == null || Optional.ofNullable(enderecoDTO.getErro()).orElse(false)) {
                 throw new IllegalArgumentException("CEP não encontrado");
             }
             Endereco endereco = Endereco.builder()
@@ -58,4 +62,9 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
+    public Usuario consultarUsuarioLogado() {
+        String usuarioLogado = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return usuarioRepository.findByUsername(usuarioLogado)
+                .orElseThrow(() -> new UsernameNotFoundException("Username " + usuarioLogado + " não encontrado."));
+    }
 }

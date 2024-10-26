@@ -1,6 +1,6 @@
 package br.edu.dio.desafio.design.patterns.config;
 
-import br.edu.dio.desafio.design.patterns.dto.UserDTO;
+import br.edu.dio.desafio.design.patterns.dto.UsuarioCadastroDTO;
 import br.edu.dio.desafio.design.patterns.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -14,7 +14,7 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
 
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addMappings(new PropertyMap<UserDTO, Usuario>() {
+        modelMapper.addMappings(new PropertyMap<UsuarioCadastroDTO, Usuario>() {
             @Override
             protected void configure() {
                 map().getEndereco().setCep(source.getCep());

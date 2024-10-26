@@ -35,24 +35,25 @@ public class AutenticacaoService implements UserDetailsService {
 
     public Sessao autenticarUsuario(Login login) {
 
-        Optional<Autenticacao> userAuth = autenticacaoRepository.findByUsername(login.getUsername());
-        if (userAuth.isEmpty()) {
+        Optional<Autenticacao> autenticacao = autenticacaoRepository.findByUsername(login.getUsername());
+        if (autenticacao.isEmpty()) {
             throw new UsernameNotFoundException("Usuário " + login.getUsername() + " não encontrado");
         }
 
-        boolean passwordOk = encoder.matches(login.getPassword(), userAuth.get().getPassword());
+        boolean passwordOk = encoder.matches(login.getPassword(), autenticacao.get().getPassword());
         if (!passwordOk) {
             throw new BadCredentialsException("Senha inválida para o login: " + login.getUsername());
         }
 
         //Estamos enviando um objeto Sessão para retornar mais informações do usuário
         Sessao sessao = new Sessao();
-        sessao.setUsername(userAuth.get().getUsername());
+        sessao.setUsername(autenticacao.get().getUsername());
 
         JWTObject jwtObject = new JWTObject();
+        jwtObject.setSubject(login.getUsername());
         jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
         jwtObject.setExpiration((new Date(System.currentTimeMillis() + securityConfig.getExpiration())));
-        jwtObject.setRoles(userAuth.get().getRoles());
+        jwtObject.setRoles(autenticacao.get().getRoles());
 
         sessao.setToken(JWTCreator.create(securityConfig.getPrefix(), securityConfig.getKey(), jwtObject));
         return sessao;

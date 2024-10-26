@@ -40,12 +40,12 @@ public class JWTCreator {
         token = token.replace(prefix, "");
         token = Strings.trimAllWhitespace(token);
         Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
-        JWTObject object = new JWTObject();
-        object.setSubject(claims.getSubject());
-        object.setExpiration(claims.getExpiration());
-        object.setIssuedAt(claims.getIssuedAt());
-        object.setRoles((List<String>) claims.get(ROLES_AUTHORITIES));
-        return object;
+        JWTObject jwtObject = new JWTObject();
+        jwtObject.setSubject(claims.getSubject());
+        jwtObject.setExpiration(claims.getExpiration());
+        jwtObject.setIssuedAt(claims.getIssuedAt());
+        jwtObject.setRoles((List<String>) claims.get(ROLES_AUTHORITIES));
+        return jwtObject;
 
     }
 

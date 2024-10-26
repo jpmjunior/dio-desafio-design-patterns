@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Auth", description = "Dados de autenticação")
-public class AuthDTO {
+@Schema(name = "AutenticacaoCadastro", description = "Dados de cadastro de autenticação")
+public class AutenticacaoCadastroDTO {
 
     @Schema(description = "Nome de usuário", example = "josejunior")
     private String username;
