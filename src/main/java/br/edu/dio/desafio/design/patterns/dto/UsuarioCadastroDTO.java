@@ -1,6 +1,8 @@
 package br.edu.dio.desafio.design.patterns.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,9 +13,11 @@ import lombok.NoArgsConstructor;
 @Schema(name = "UsuarioCadastro", description = "Dados de cadastro de usuário")
 public class UsuarioCadastroDTO {
 
+    @NotBlank
     @Schema(example = "José Júnior")
     private String nome;
 
+    @NotBlank
     @Schema(example = "65056000")
     private String cep;
 
@@ -23,6 +27,7 @@ public class UsuarioCadastroDTO {
     @Schema(example = "Bloco A, Apt. 103")
     private String complemento;
 
+    @NotNull
     private AutenticacaoCadastroDTO autenticacao;
 
  }

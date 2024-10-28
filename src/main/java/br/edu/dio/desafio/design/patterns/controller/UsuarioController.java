@@ -7,7 +7,9 @@ import br.edu.dio.desafio.design.patterns.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,20 +35,32 @@ public class UsuarioController {
     }
 
     @Operation(
-            summary = "Cadastro de usuários",
-            description = "Endpoint para cadastro de usuários")
+            summary = "Cadastrar de usuário",
+            description = "Endpoint para realizar cadastro de usuários")
     @ApiResponse(
             responseCode = "201",
             description = "Cadastro realizado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @PostMapping
-    public ResponseEntity<UsuarioCadastroDTO> criar(@RequestBody UsuarioCadastroDTO usuarioCadastroDTO){
+    public ResponseEntity<UsuarioConsultaDTO> criar(@RequestBody @Valid UsuarioCadastroDTO usuarioCadastroDTO){
         Usuario usuarioEntity = modelMapper.map(usuarioCadastroDTO, Usuario.class);
         service.criar(usuarioEntity);
-        return ResponseEntity.created(URI.create("/users")).build();
+        UsuarioConsultaDTO usuarioCadastrado = modelMapper.map(usuarioEntity, UsuarioConsultaDTO.class);
+        return ResponseEntity.created(URI.create("/users")).body(usuarioCadastrado);
     }
 
-    //TODO Documentar endpoint
+    @SecurityRequirement(name = "tokenJWT")
+    @Operation(
+            summary = "Consultar usuário logado",
+            description = "Endpoint para consultar usuário logado")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Consulta realizada com sucesso",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(
+            responseCode = "403",
+            description = "Não autorizado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @GetMapping
     public ResponseEntity<UsuarioConsultaDTO> consultarUsuarioLogado() {
         Usuario usuario = service.consultarUsuarioLogado();

@@ -47,8 +47,8 @@ public class WebSecurityConfig {
                         req.requestMatchers(HttpMethod.GET, "/").permitAll();
                         req.requestMatchers(HttpMethod.POST, "/login").permitAll();
                         req.requestMatchers(HttpMethod.POST, "/users").permitAll();
-                        req.requestMatchers(HttpMethod.GET, "/users").hasAnyRole("USERS", "MANAGERS");
-                        req.requestMatchers("/managers").hasRole("MANAGERS");
+                        req.requestMatchers(HttpMethod.GET, "/role/users").hasAnyRole("USERS", "MANAGERS");
+                        req.requestMatchers(HttpMethod.GET,"/role/managers").hasRole("MANAGERS");
                         req.anyRequest().authenticated();
                 })
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

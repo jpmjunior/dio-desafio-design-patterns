@@ -14,6 +14,7 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
 
         ModelMapper modelMapper = new ModelMapper();
+
         modelMapper.addMappings(new PropertyMap<UsuarioCadastroDTO, Usuario>() {
             @Override
             protected void configure() {
@@ -22,6 +23,7 @@ public class ModelMapperConfig {
                 map().getEndereco().setComplemento(source.getComplemento());
             }
         });
+
         return modelMapper;
 
     }

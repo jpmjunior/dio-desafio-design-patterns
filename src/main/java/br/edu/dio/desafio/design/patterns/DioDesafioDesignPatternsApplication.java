@@ -6,10 +6,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
 @SpringBootApplication
-public class DioCursoSpringSecurityApplication {
+public class DioDesafioDesignPatternsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DioCursoSpringSecurityApplication.class, args);
+		SpringApplication.run(DioDesafioDesignPatternsApplication.class, args);
 	}
 
 }

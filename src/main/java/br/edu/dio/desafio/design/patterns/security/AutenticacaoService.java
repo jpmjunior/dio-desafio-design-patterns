@@ -1,7 +1,5 @@
 package br.edu.dio.desafio.design.patterns.security;
 
-import br.edu.dio.desafio.design.patterns.dto.Login;
-import br.edu.dio.desafio.design.patterns.dto.Sessao;
 import br.edu.dio.desafio.design.patterns.model.Autenticacao;
 import br.edu.dio.desafio.design.patterns.repository.AutenticacaoRepository;
 import org.springframework.security.authentication.BadCredentialsException;

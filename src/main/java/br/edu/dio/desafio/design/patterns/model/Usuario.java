@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,16 +22,18 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     @Column(length = 50, nullable = false)
     private String nome;
 
+    @NotNull
     @Embedded
     private Endereco endereco;
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "autenticacao_id")
     private Autenticacao autenticacao;

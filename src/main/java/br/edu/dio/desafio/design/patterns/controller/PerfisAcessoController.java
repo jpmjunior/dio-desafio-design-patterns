@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "tokenJWT")
 @Tag(name = "Perfis de acesso", description = "Operações para teste dos perfis de acesso")
 @RestController
-@RequestMapping("roles")
+@RequestMapping("role")
 public class PerfisAcessoController {
 
     @Operation(
