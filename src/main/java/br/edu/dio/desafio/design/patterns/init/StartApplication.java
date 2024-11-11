@@ -34,11 +34,11 @@ public class StartApplication implements CommandLineRunner {
                     .endereco(Endereco.builder().cep("65056000").build())
                     .autenticacao(Autenticacao.builder()
                             .username("admin")
-                            .password("master123")
+                            .password("admin123")
                             .roles(List.of("MANAGERS"))
                             .build())
                     .build();
-            service.criar(novoUsuario);
+            service.cadastrar(novoUsuario);
         }
         usuario = repository.findByUsername("user");
         if(usuario.isEmpty()){
@@ -51,7 +51,7 @@ public class StartApplication implements CommandLineRunner {
                             .roles(List.of("USERS"))
                             .build())
                     .build();
-            service.criar(novoUsuario);
+            service.cadastrar(novoUsuario);
         }
     }
 

@@ -58,7 +58,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve exibir log de erro quando ViaCEP retornar erro")
-    void criar_cenario1() {
+    void cadastrar_cenario1() {
         //Arrange
         Usuario usuario = Usuario.builder()
                 .nome("Admin")
@@ -76,7 +76,7 @@ class UsuarioServiceTest {
         when(usuarioRepository.save(any())).thenReturn(null);
 
         //Act
-        usuarioService.criar(usuario);
+        usuarioService.cadastrar(usuario);
 
         //Assert
         List<ILoggingEvent> logs = testLogAppender.getEvents();

@@ -28,6 +28,10 @@ public class EnderecoDTO {
 
     private String estado;
 
+    private String numero;
+
+    private String complemento;
+
     private Boolean erro;
 
 }
