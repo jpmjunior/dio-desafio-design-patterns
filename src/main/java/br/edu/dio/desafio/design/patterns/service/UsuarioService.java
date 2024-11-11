@@ -50,6 +50,9 @@ public class UsuarioService {
         //criptografando antes de salvar no banco
         usuario.getAutenticacao().setPassword(encoder.encode(pass));
 
+        //atribuindo perfil USERS
+        usuario.getAutenticacao().setRoles(List.of("USERS"));
+
         //consultando CEP na API ViaCEP
         try {
 
@@ -89,13 +92,17 @@ public class UsuarioService {
         String usuarioLogado = getUsuarioLogado();
 
         return usuarioRepository.findByUsername(usuarioLogado)
-                .orElseThrow(() -> new UsernameNotFoundException("Username " + usuarioLogado + " não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException(usuarioLogado + ": Username não encontrado"));
 
     }
 
     public List<Usuario> consultarTodos() {
 
-        return usuarioRepository.findAll();
+        if (ehAdmin()) {
+            return usuarioRepository.findAll();
+        }
+
+        throw new AccessDeniedException("Operação não permitida");
 
     }
 
@@ -117,7 +124,7 @@ public class UsuarioService {
     public Usuario atualizar(Usuario usuarioParaAtualizar) {
 
         Usuario usuarioExistente = usuarioRepository.findById(usuarioParaAtualizar.getId())
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+                .orElseThrow(NoSuchElementException::new);
 
         if (ehAdmin() || ehCadastroProprio(usuarioExistente) ) {
             // atualiza usuario da base com campos não nulos fornecidos
@@ -146,7 +153,7 @@ public class UsuarioService {
     private boolean ehCadastroProprio(Usuario usuarioConsultado) {
 
         Usuario usuarioLogado = usuarioRepository.findByUsername(getUsuarioLogado())
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+                .orElseThrow(NoSuchElementException::new);
 
         return usuarioLogado.getId().equals(usuarioConsultado.getId());
 
@@ -155,7 +162,7 @@ public class UsuarioService {
     private boolean ehAdmin() {
 
         Usuario usuarioLogado = usuarioRepository.findByUsername(getUsuarioLogado())
-                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado"));
+                .orElseThrow(NoSuchElementException::new);
 
         return usuarioLogado.getAutenticacao().getRoles().contains(ROLE_MANAGERS);
 

@@ -22,7 +22,4 @@ public class AutenticacaoCadastroDTO {
     @Schema(description = "Senha do usuário", example = "senha1234")
     private String password;
 
-    @Schema(description = "Perfis de acesso", example = "[\"USERS\",\"MANAGERS\"]")
-    private List<String> roles;
-
 }

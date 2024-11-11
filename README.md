@@ -48,3 +48,5 @@ Dica: Além dos projetos/repositórios que criamos para este desafio, caso queir
 #### Swagger: [http://localhost:8080/swagger-ui.htm](http://localhost:8080/swagger-ui.html)
 #### Console H2: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 
+## Links da API hospedada no Railway
+#### Swagger: [https://dio-desafio-design-patterns-prd.up.railway.app/swagger-ui.html](https://dio-desafio-design-patterns-prd.up.railway.app/swagger-ui.html)

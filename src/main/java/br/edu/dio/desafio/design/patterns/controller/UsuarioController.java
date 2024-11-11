@@ -134,6 +134,14 @@ public class UsuarioController {
             responseCode = "200",
             description = "Atualização realizada com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(
+            responseCode = "403",
+            description = "Não autorizado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(
+            responseCode = "404",
+            description = "Não encontrado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @PutMapping
     public ResponseEntity<UsuarioConsultaDTO> atualizar(@RequestBody UsuarioAtualizacaoDTO usuarioParaAtualizar) {
         Usuario usuarioParaAtualizarEntity = modelMapper.map(usuarioParaAtualizar, Usuario.class);
@@ -142,6 +150,22 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioAtualizadoDTO);
     }
 
+    @SecurityRequirement(name = "tokenJWT")
+    @Operation(
+            summary = "Excluir usuário",
+            description = "Endpoint para realizar a exlusão de usuários")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Exclusão realizada com sucesso",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(
+            responseCode = "403",
+            description = "Não autorizado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(
+            responseCode = "404",
+            description = "Não encontrado",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
     @DeleteMapping("{id}")
     public ResponseEntity<Object> excluirById(@PathVariable Integer id) {
         service.excluirById(id);
